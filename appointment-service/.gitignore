@@ -1,0 +1,24 @@
+# Appointment Service .gitignore
+
+# Python Cache & Virtual Environment
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Database Files & Migrations Cache
+*.db
+*.sqlite
+*.sqlite3
+alembic/__pycache__/
+
+# Local Environment & Secrets
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Logs & Testing
+*.log
+.pytest_cache/
+.coverage

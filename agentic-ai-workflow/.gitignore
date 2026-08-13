@@ -1,0 +1,21 @@
+# Agentic AI Workflow Service .gitignore
+
+# Python Cache & Virtual Environment
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local Environment & Secrets
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Vector Database Data
+chroma_db/
+
+# Logs & Testing
+*.log
+.pytest_cache/
+.coverage

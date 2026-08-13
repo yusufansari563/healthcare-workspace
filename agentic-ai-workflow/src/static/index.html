@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic AI Workflow Studio</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 24px;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--card-border);
+            margin-bottom: 32px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--primary), #8b5cf6);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+        }
+
+        .logo-text h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #fff, #a5b4fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .system-badges {
+            display: flex;
+            gap: 8px;
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 110px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 12px;
+            color: #fff;
+            font-size: 0.95rem;
+            resize: none;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 12px;
+            font-size: 0.95rem;
+            transition: transform 0.1s, box-shadow 0.2s;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3);
+        }
+
+        /* Timeline */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .step-item.active {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .step-item.done {
+            border-color: var(--accent);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .step-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .step-item.done .step-icon {
+            background: var(--accent);
+            color: white;
+        }
+
+        .step-item.active .step-icon {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* HITL Alert Box */
+        .hitl-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.05));
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+            display: none;
+        }
+
+        .hitl-box.visible {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .hitl-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        /* Terminal Logs */
+        .terminal {
+            background: #020617;
+            border-radius: 10px;
+            padding: 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            color: #cbd5e1;
+            height: 180px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .log-entry {
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
+        /* Stat Grid */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--card-border);
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-val {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-lbl {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="logo">
+            <div class="logo-icon">🤖</div>
+            <div class="logo-text">
+                <h1>Agentic AI Workflow</h1>
+                <p>LangGraph • ClickUp • GitHub PR • Postgres • Email • RAG</p>
+            </div>
+        </div>
+        <div class="system-badges" id="systemBadges">
+            <div class="badge"><div class="badge-dot"></div> Postgres Docker</div>
+            <div class="badge"><div class="badge-dot"></div> Ollama/LLM</div>
+            <div class="badge"><div class="badge-dot"></div> RAG Local</div>
+        </div>
+    </header>
+
+    <div class="grid">
+        <!-- Left Column: Input & Controls -->
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+            <!-- Input Card -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">💡 Instruction Input</div>
+                    <span style="font-size: 0.75rem; color: var(--text-muted);">Step 1: Define Goal</span>
+                </div>
+                <textarea id="instructionInput" placeholder="e.g. Add a rate-limiting middleware to auth service, update tests, and write API documentation..."></textarea>
+                <button class="btn" id="startBtn" onclick="startWorkflow()">Launch Agentic Workflow</button>
+            </div>
+
+            <!-- HITL Approval Card -->
+            <div class="card hitl-box" id="hitlCard">
+                <div style="display: flex; align-items: center; gap: 8px; font-weight: 600; color: var(--warning);">
+                    ⚠️ Human-In-The-Loop Approval Required
+                </div>
+                <p style="font-size: 0.85rem; margin-top: 6px; color: var(--text-muted);" id="hitlMessage">
+                    The AI agent generated an execution plan. Please review and approve to proceed with ClickUp ticket creation.
+                </p>
+                <div class="hitl-actions">
+                    <button class="btn btn-success" style="margin-top:0;" onclick="submitApproval(true)">Approve & Continue</button>
+                    <button class="btn btn-danger" style="margin-top:0;" onclick="submitApproval(false)">Reject</button>
+                </div>
+            </div>
+
+            <!-- Token Optimization Dashboard -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">⚡ Token Cost Optimization</div>
+                    <span style="font-size: 0.75rem; color: var(--accent);">Small Open Source Model</span>
+                </div>
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <div class="stat-val" id="statTokens">0</div>
+                        <div class="stat-lbl">Total Tokens Used</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-val" id="statActualCost">$0.00</div>
+                        <div class="stat-lbl">Actual LLM Cost</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-val" id="statSavings">$0.00</div>
+                        <div class="stat-lbl">Estimated Saved</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Progress & Real-time Logs -->
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+            <!-- Timeline Steps -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">🔄 Workflow Lifecycle</div>
+                    <span id="workflowStatusBadge" style="font-size: 0.75rem; color: var(--text-muted);">Idle</span>
+                </div>
+                <div class="timeline">
+                    <div class="step-item" id="stepRAG"><div class="step-icon">1</div> 🔍 RAG Local Codebase Context</div>
+                    <div class="step-item" id="stepPlan"><div class="step-icon">2</div> 📋 AI Plan Generation & Review (HITL)</div>
+                    <div class="step-item" id="stepTickets"><div class="step-icon">3</div> 🎫 ClickUp Ticket Creation</div>
+                    <div class="step-item" id="stepExec"><div class="step-icon">4</div> ⚙️ Task Execution Loop</div>
+                    <div class="step-item" id="stepPR"><div class="step-icon">5</div> 🔀 GitHub PR Creation (HITL)</div>
+                    <div class="step-item" id="stepEmail"><div class="step-icon">6</div> 📧 Email Report (yusufansari563@gmail.com)</div>
+                </div>
+            </div>
+
+            <!-- Live Logs Terminal -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">🖥️ Execution Log Stream</div>
+                    <button style="background: none; border: none; color: var(--text-muted); font-size: 0.75rem; cursor: pointer;" onclick="clearLogs()">Clear</button>
+                </div>
+                <div class="terminal" id="terminalLog">
+                    <div class="log-entry" style="color: var(--text-muted);">[System] Ready. Enter instruction and click 'Launch Agentic Workflow'.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
